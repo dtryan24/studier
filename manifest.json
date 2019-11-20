@@ -1,0 +1,27 @@
+{
+"update_url":"http://clients2.google.com/service/update2/crx",
+  "name" : "Studier",
+  "short_name": "Studier",
+  "version" : "1.2.1",
+  "manifest_version": 2,
+  "description" : "Studier",
+  "default_locale": "en",
+  "background" : {
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_title": "Studier",
+    "default_icon": "images/128logo.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "icons" : {
+    "128" : "images/128logo.png",
+    "64" : "images/48logo.png",
+    "16" : "images/16logo.png"
+  },
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
+}
