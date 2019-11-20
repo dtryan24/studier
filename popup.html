@@ -14,6 +14,18 @@
   float: right;
 }
 
+#deckSelect {
+  display: inline;
+  float: right;
+}
+
+#deckName {
+  display: inline;
+  justify-content: center;
+  width: 40%;
+
+}
+
 #save {
   float: right;
 }
@@ -40,20 +52,27 @@ body {
 </head>
 
 <body>
-  <span id="extListTitle">Questions</span><br>
-  <nav>
-    <ul id="studierDeck">
+<div>
+  <span>
+    <input type="text" id="deckName" placeholder="Study Deck Name"/>
+  </span>
+  <span id="deckSelect">
+    <select id ="selectDeck"></select>
+  </span>
+</div>
+    <div>
+      <ul id="studierDeck"></ul>
       <button id="AddInput">Add Study Item</button>
-    </ul>
+    </div>
 
   </nav>
   <span id="extInterval">Interval:</span>
   <div>
     <span>
-      <input type="text" id="minInterval" class="time" placeholder="Minutes">
+      <input type="text" id="minInterval" class="time" placeholder="Minutes"/>
     </span>
     <span>
-      <input type="text" id="secInterval" class="time" placeholder="Seconds">
+      <input type="text" id="secInterval" class="time" placeholder="Seconds"/>
     </span>
     <span>
       <button name="stop" id="stop">Stop</button>

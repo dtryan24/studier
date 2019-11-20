@@ -14,9 +14,22 @@ _gaq.push(['_trackPageview']);
 })();   
 // EOF GA
 
-let fufillStart = () => {
+let fufillStart = async () => {
   let min = document.getElementById("minInterval").value;
+  // let min;
+  // await chrome.storage.sync.get(["minuteInterval"], (result) => {
+  //   if (result && result.minuteInterval){
+  //     min = result.minuteInterval;
+  //   }
+  // });
+
   let sec = document.getElementById("secInterval").value;
+  // let sec;
+  // await chrome.storage.sync.get(["secondInterval"], (result) => {
+  //   if (result && result.secondInterval){
+  //     sec = result.secondInterval;
+  //   }
+  // });
 
   if(isNaN(min)) {
     alert(chrome.i18n.getMessage("extErrNaN"));
@@ -45,7 +58,6 @@ let quitOperation = () => {
 
 let addInputRow = () => {
   let list = document.getElementById("studierDeck");
-  //console.log(list);
 
   let li = document.createElement("li");
   li.setAttribute("class", "StudierQuery");
@@ -60,7 +72,7 @@ let addInputRow = () => {
 
   list.appendChild(li);
 
-  list.insertBefore(li, document.getElementById("AddInput"));
+  //list.insertBefore(li, document.getElementById("AddInput"));
 };
 
 let getQuestionsAnswers = () => {
@@ -99,7 +111,8 @@ let fillQuestionInput = (quiz) => {
     a.setAttribute("placeHolder", "Answer");
     a.value = flashCard.answer;
     li.appendChild(a);
-    list.insertBefore(li, document.getElementById("AddInput"));
+    list.appendChild(li);
+    //list.insertBefore(li, document.getElementById("AddInput"));
   });
 };
 
@@ -127,6 +140,26 @@ let addPriorContents = () => {
 
 };
 
+
+let saveOnKeyUp = () => {
+    let currentDeck = getQuestionsAnswers();
+    chrome.storage.sync.set({"quizQuestions": currentDeck}, function(){
+      //console.log(currentDeck);
+    });
+}
+
+let addDropDownItems = () => {
+//<option value = "1">one</option>
+
+  let selectElement = document.getElementById("selectDeck");
+
+  let opt = document.createElement("option");
+  opt.value = "testing";
+  opt.innerHTML = "testing";
+
+  selectElement.appendChild(opt);
+}
+
 // let connect = () => {
 //   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 //     const port = chrome.tabs.connect(tabs[0].id);
@@ -143,46 +176,18 @@ window.addEventListener('load', () => {
 
   // Fills the form with the prior contents
   addPriorContents();
+  addDropDownItems();
 
   // This services the add input button. Creating key-value pair input
-  document.getElementById("AddInput").addEventListener("click", addInputRow);
-
+  document.getElementById("AddInput").addEventListener('click', addInputRow);
   // Should there just be save button
-  document.getElementById("studierDeck").addEventListener("keyup", () => {
-    let currentDeck = getQuestionsAnswers();
-    chrome.storage.sync.set({"quizQuestions": currentDeck}, function(){
-      //console.log(currentDeck);
-    });
-  });
-
+  document.getElementById("studierDeck").addEventListener('keyup', saveOnKeyUp);
   document.getElementById("minInterval").addEventListener('keyup', (press) => {
-    chrome.storage.sync.set({"minuteInterval": press.target.value}, function(){
-      //console.log("Minute Interval is: " + press.target.value);
-    });
+    chrome.storage.sync.set({"minuteInterval": press.target.value});
   });
   document.getElementById("secInterval").addEventListener('keyup', (press) => {
-    chrome.storage.sync.set({"secondInterval": press.target.value}, function(){
-      //console.log("Second Interval is: " + press.target.value);
-    });
+    chrome.storage.sync.set({"secondInterval": press.target.value});
   });
-
-
   document.getElementById("start").addEventListener('click', fufillStart);
   document.getElementById("stop").addEventListener('click', quitOperation);
-  
-  //
-  // document.getElementById("extListTitle").innerHTML = chrome.i18n.getMessage("extListTitle");
-  // document.getElementById("extInterval").innerHTML = chrome.i18n.getMessage("extInterval");
-  // document.getElementById("extMinutesAnd").innerHTML = chrome.i18n.getMessage("extMinutesAnd");
-  // document.getElementById("extSeconds").innerHTML = chrome.i18n.getMessage("extSeconds");
-  // document.getElementById("start").innerHTML = chrome.i18n.getMessage("extStart");
-  // document.getElementById("stop").innerHTML = chrome.i18n.getMessage("extStop");
-  //
-  
-  // setTimeout(function(){
-  //     var i = document.createElement("spa  n");
-  //     document.body.appendChild(i);
-  //   }, 10);
-
-  //connect();
 });
