@@ -48,7 +48,7 @@ body {
 
 </style>
 
-<script src="js/popup.js"></script>
+<script src="js/popup.js" type="module"></script>
 </head>
 
 <body>
@@ -57,7 +57,9 @@ body {
     <input type="text" id="deckName" placeholder="Study Deck Name"/>
   </span>
   <span id="deckSelect">
-    <select id ="selectDeck"></select>
+    <select id ="selectDeck">
+      <option value="dummy">Change Stack</option>
+    </select>
   </span>
 </div>
     <div>
