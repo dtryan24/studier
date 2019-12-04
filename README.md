@@ -1,6 +1,6 @@
 How many of us have spent an hour-long study session with 20 minutes reviewing material and the other 40 minutes browsing Facebook? I know I have—more than a few times. 
 
-In this age of where I can spend an entire afternoon scrolling down my timeline watching cute cat videos, it can be tough to find a balance between study and leisure. That's why I created Studier.
+In this age where I can spend an entire afternoon scrolling down my timeline watching cute cat videos, it can be tough to find a balance between study and leisure. That's why I created Studier.
 
 Studier allows you to study while you surf the web!
 
