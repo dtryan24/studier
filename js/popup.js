@@ -8,7 +8,8 @@ const isEqualQuestionsArray = (obj1, obj2) => {
   }
 
   return true;
-}
+};
+
 const isEqualQuestion = (obj1, obj2) => {
   const obj1Keys = Object.keys(obj1);
   const obj2Keys = Object.keys(obj2);
@@ -22,7 +23,7 @@ const isEqualQuestion = (obj1, obj2) => {
   }
 
   return true;
-}
+};
 
 const CURRENT_STACK = "currentStack";
 const SAVED_STACKS = "savedStacks";

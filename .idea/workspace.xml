@@ -12,6 +12,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -44,6 +51,16 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="popup.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="popup.js" working-dir="$PROJECT_DIR$/js">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.popup.js" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -65,6 +82,9 @@
       <workItem from="1573687068422" duration="3271000" />
       <workItem from="1573751033965" duration="721000" />
       <workItem from="1574229043944" duration="7748000" />
+      <workItem from="1574290718528" duration="12879000" />
+      <workItem from="1574457205915" duration="277000" />
+      <workItem from="1574633886757" duration="415000" />
     </task>
     <servers />
   </component>
@@ -76,7 +96,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
