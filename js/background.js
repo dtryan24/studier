@@ -22,7 +22,7 @@ let showQuestion = (currentQueryIndex, questions) => {
 
     while (!answer || answer.toLowerCase().trim() !== questionPair.answer.toLowerCase().trim()) {
         answer = prompt(questionPair.question + '      -      ' + questionPair.answer.substr(0,counter));
-        counter++;
+        counter = questionPair.answer.length;
     }
     if (answer && counter === 1) {
         questions.questions.splice(currentQueryIndex, 1);
