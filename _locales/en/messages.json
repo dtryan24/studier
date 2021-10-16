@@ -1,0 +1,41 @@
+{
+  "extName" : {
+    "message": "Memorize!"
+  },
+  "extDescription" : {
+    "message": "A lightweight extension that helps you to learn / memorize given answers to given questions."
+  },     
+  "extListTitle" : {
+    "message": "Questions"
+  },    
+  "extInterval" : {
+    "message": "Interval:"
+  }, 
+  "extMinutesAnd" : {
+    "message": "minutes and"
+  }, 
+  "extSeconds" : {
+    "message": "seconds"
+  }, 
+  "extStart" : {
+    "message": "Start"
+  }, 
+  "extStop" : {
+    "message": "Stop"
+  }, 
+  "extErrNaN" : {
+    "message": "Interval must be a number."
+  },
+  "extErrListFormat" : {
+    "message": "Wrong input: there is a missing ':' somewhere."
+  },
+  "extCorrect" : {
+    "message": "Correct!\n"
+  },
+  "extFinish" : {
+    "message": "You've answered all the questions. If you want to repeat further, click 'start' again."  
+  },
+  "extNotFilled" : {
+    "message": "Please fill out intervals and study content."
+  }
+}

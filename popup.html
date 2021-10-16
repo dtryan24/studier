@@ -1,0 +1,85 @@
+<head>
+<title>Studier</title>
+<style>
+#studierDeck {
+  width: 100%;
+  height: 120px;
+}
+#minInterval, #secInterval {
+  width: 20%;
+}
+
+#start, #stop {
+  width: 10%;
+  float: right;
+}
+
+#deckSelect {
+  display: inline;
+  float: right;
+}
+
+#deckName {
+  display: inline;
+  justify-content: center;
+  width: 40%;
+
+}
+
+ul {
+  list-style-type: none;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+button {
+  border-radius: 4px;
+  background-color: darkgrey;
+}
+
+body {
+  width: 400px;
+  background-color: rgb(52, 152, 219)
+}
+
+</style>
+
+<script src="js/popup.js" type="module"></script>
+</head>
+
+<body>
+<div>
+  <span>
+    <input type="text" id="deckName" placeholder="Study Deck Name"/>
+  </span>
+  <span>
+    <button name="save" id="save">Save</button>
+  </span>
+  <span id="deckSelect">
+    <select id ="selectDeck">
+      <option value="dummy">Change Stack</option>
+    </select>
+  </span>
+</div>
+    <div>
+      <ul id="studierDeck"></ul>
+      <button id="AddInput">Add Study Item</button>
+    </div>
+
+  </nav>
+  <span id="extInterval">Interval:</span>
+  <div>
+    <span>
+      <input type="text" id="minInterval" class="time" placeholder="Minutes"/>
+    </span>
+    <span>
+      <input type="text" id="secInterval" class="time" placeholder="Seconds"/>
+    </span>
+    <!-- <span>
+      <button name="stop" id="stop">Stop</button>
+    </span> -->
+    <span>
+      <button name="startstop" id="startstop">Quiz Me!</button>
+    </span>
+  </div>
+</body>
