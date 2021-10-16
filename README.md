@@ -17,5 +17,3 @@ Step 4) Ace your exam!
 Please contact me for any issues you may run into or suggestions for new features.
 
 
-Because I am a broke college student doing this in my free time, I would love any donations that you are willing to give! My venmo is daniel_ryan_ (the last underscore is very important). Donations will allow me to put more time into this and make this the best extension it can be.
-
