@@ -1,7 +1,7 @@
 {
   "name" : "Studier: Study While You Scroll",
   "short_name": "Studier",
-  "version" : "1.2.1",
+  "version" : "1.2.2",
   "manifest_version": 2,
   "description" : "Studier",
   "default_locale": "en",

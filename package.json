@@ -1,0 +1,27 @@
+{
+  "name": "studier",
+  "version": "1.0.0",
+  "description": "How many of us have spent an hour-long study session with 20 minutes reviewing material and the other 40 minutes browsing Facebook? I know I have—more than a few times.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "webstore upload --auto-publish",
+  },
+  "devDependencies": {
+      "chrome-webstore-upload-cli": "^2.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtryan24/studier.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dtryan24/studier/issues"
+  },
+  "homepage": "https://github.com/dtryan24/studier#readme",
+  "devDependencies": {
+    "chrome-webstore-upload-cli": "^2.0.1"
+  }
+}
