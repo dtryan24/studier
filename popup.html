@@ -26,10 +26,6 @@
 
 }
 
-#save {
-  float: right;
-}
-
 ul {
   list-style-type: none;
   overflow: hidden;
@@ -43,7 +39,7 @@ button {
 
 body {
   width: 400px;
-  background-color: mintcream;
+  background-color: rgb(52, 152, 219)
 }
 
 </style>
@@ -55,6 +51,9 @@ body {
 <div>
   <span>
     <input type="text" id="deckName" placeholder="Study Deck Name"/>
+  </span>
+  <span>
+    <button name="save" id="save">Save</button>
   </span>
   <span id="deckSelect">
     <select id ="selectDeck">
@@ -76,11 +75,11 @@ body {
     <span>
       <input type="text" id="secInterval" class="time" placeholder="Seconds"/>
     </span>
-    <span>
+    <!-- <span>
       <button name="stop" id="stop">Stop</button>
-    </span>
+    </span> -->
     <span>
-      <button name="start" id="start">Start</button>
+      <button name="startstop" id="startstop">Quiz Me!</button>
     </span>
   </div>
 </body>

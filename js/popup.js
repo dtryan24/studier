@@ -1,35 +1,17 @@
-const isEqualQuestionsArray = (obj1, obj2) => {
-  if (obj1.length !== obj2.length)
-    return false;
+import {isEqualQuestion, isEqualQuestionsArray} from "./questionHelperFunctions.js";
+import { addInputRow,
+    getQuestionsAnswers,
+    addPriorContents,
+    fillQuestionInput,
+    setStartButton
+ } from "./UIHelper.js";
 
-  for (let i =0; i < obj1.length; i++){
-    if (!isEqualQuestion(obj1[i], obj2[i]))
-      return false;
-  }
-
-  return true;
-};
-
-const isEqualQuestion = (obj1, obj2) => {
-  const obj1Keys = Object.keys(obj1);
-  const obj2Keys = Object.keys(obj2);
-
-  if (obj1Keys.length != obj2Keys.length)
-    return false;
-
-  for (let objKey of obj1Keys){
-    if (obj1[objKey] !== obj2[objKey])
-      return false;
-  }
-
-  return true;
-};
-
-const CURRENT_STACK = "currentStack";
-const SAVED_STACKS = "savedStacks";
-const SECOND_INTERVAL = "secondInterval";
-const MINUTE_INTERVAL = "minuteInterval";
-
+import { CURRENT_STACK,
+    SAVED_STACKS,
+    SECOND_INTERVAL,
+    MINUTE_INTERVAL,
+    QUIZ_STATE
+  } from "./constants.js";
 /*
 Things saved in chrome memory
 
@@ -53,10 +35,10 @@ _gaq.push(['_trackPageview']);
   ga.src = 'https://ssl.google-analytics.com/ga.js';
   let s = document.getElementsByTagName('script')[0];
   s.parentNode.insertBefore(ga, s);
-})();   
+})();
 // EOF GA
 
-let fufillStart = async () => {
+let fulfillStart = async () => {
   let min = document.getElementById("minInterval").value;
   let sec = document.getElementById("secInterval").value;
 
@@ -69,12 +51,16 @@ let fufillStart = async () => {
     return;
   }
 
+  chrome.storage.sync.set({[QUIZ_STATE] : true});
+
   chrome.runtime.sendMessage({
       min: min,
       sec: sec,
       quizContent: getQuestionsAnswers(),
       abort: 0
     }, (response) => {
+      chrome.storage.sync.set({[QUIZ_STATE] : false});
+      setStartButton(false);
     // console.log(response);
   });
 };
@@ -85,121 +71,44 @@ let quitOperation = () => {
   });
 };
 
-let addInputRow = () => {
-  let list = document.getElementById("studierDeck");
+let startButtonPress = async (buttonPress) => {
 
-  let li = document.createElement("li");
-  li.setAttribute("class", "StudierQuery");
-  let q = document.createElement("input");
-  q.setAttribute("type", "text");
-  q.setAttribute("placeHolder", "Question");
-  li.appendChild(q);
-  let a = document.createElement("input");
-  a.setAttribute("type", "text");
-  a.setAttribute("placeHolder", "Answer");
-  li.appendChild(a);
+  chrome.storage.sync.get([QUIZ_STATE], async (result) => {
 
-  list.appendChild(li);
+    let currentState = result[QUIZ_STATE];
 
-  //list.insertBefore(li, document.getElementById("AddInput"));
-};
-
-let getQuestionsAnswers = () => {
-  let quiz = {
-    questions: []
-  };
-
-  let inputs = document.getElementsByClassName("StudierQuery");
-  //console.log(inputs);
-  for (let item of inputs) {
-    if (item.firstChild.value && item.lastChild.value){
-      quiz.questions.push({
-        question: item.firstChild.value,
-        answer: item.lastChild.value
-      });
-    }
-  }
-
-  return quiz;
-};
-
-let fillQuestionInput = (quiz) => {
-  console.log("emptying the current questions");
-
-  let list = document.getElementById("studierDeck");
-
-  list.innerHTML = "";
-
-  console.log("adding quiz questions");
-  console.log(quiz);
-  //console.log(quiz);
-
-  quiz.forEach((flashCard) => {
-    let li = document.createElement("li");
-    li.setAttribute("class", "StudierQuery");
-    let q = document.createElement("input");
-    q.setAttribute("type", "text");
-    q.setAttribute("placeHolder", "Question");
-    q.value = flashCard.question;
-    li.appendChild(q);
-    let a = document.createElement("input");
-    a.setAttribute("type", "text");
-    a.setAttribute("placeHolder", "Answer");
-    a.value = flashCard.answer;
-    li.appendChild(a);
-    list.appendChild(li);
-    //list.insertBefore(li, document.getElementById("AddInput"));
-  });
-};
-
-let addPriorContents = (stackName) => {
-  chrome.storage.sync.get([MINUTE_INTERVAL], (result) => {
-    if (result && result[MINUTE_INTERVAL]){
-      document.getElementById("minInterval").value = result[MINUTE_INTERVAL];
-    }
-  });
-
-  chrome.storage.sync.get([SECOND_INTERVAL], (result) => {
-    if (result && result[SECOND_INTERVAL]){
-      document.getElementById("secInterval").value = result[SECOND_INTERVAL];
-    }
-  });
-
-  // fill the old data into the form
-  console.log("current stack is " + stackName);
-  document.getElementById("deckName").value = stackName;
-  chrome.storage.sync.get([stackName], function(result) {
-    console.log("Filling the page with:");
-    console.log(result);
-    console.log(result[stackName]);
-    if (result && result[stackName] && result[stackName].questions){
-      fillQuestionInput(result[stackName].questions);
+    if (currentState === undefined){
+      chrome.storage.sync.set({[QUIZ_STATE] : true});
     } else {
-      console.log("adding empty row");
-      addInputRow();
+      let futureState = !currentState;
+
+      document.getElementById("startstop").innerHTML = setStartButton(futureState);
+
+      futureState ? fulfillStart() : quitOperation();
+
     }
   });
-
 };
 
 let saveOnDeckNameChange = () => {
 
   let deckName = document.getElementById("deckName").value;
   if (deckName === ""){
-    document.getElementById("deckName").value = "unnamedDeck";
-    deckName = "unnamedDeck";
+    deckName = "Select Deck";
   }
   let allDecks = {
     savedStacks: [deckName]
   };
-  chrome.storage.sync.set({CURRENT_STACK : deckName});
+
+  chrome.storage.sync.set({[CURRENT_STACK] : deckName});
   let currentDeck = getQuestionsAnswers();
-  chrome.storage.sync.set({deckName: currentDeck}, () => {
+  chrome.storage.sync.set({[deckName]: currentDeck}, () => {
     chrome.storage.sync.get([SAVED_STACKS], (result) => {
-      if (result[SAVED_STACKS]){
+        console.log(result[SAVED_STACKS]);
+      if (result[SAVED_STACKS] !== undefined){
         result[SAVED_STACKS].forEach((stack) => {
           // check if it's the same and delete if it is
-          chrome.storage.sync.get(stack.name, (result) => {
+          chrome.storage.sync.get([stack.name], (result) => {
             console.log(result[stack.name]);
             console.log(currentDeck);
             if (result && (deckName != stack.name) && isEqualQuestionsArray(result[stack.name].questions, currentDeck.questions)) {
@@ -264,6 +173,47 @@ let openStackByName = (event) => {
   }
 }
 
+let saveDeck = async () => {
+
+    let deckName = document.getElementById("deckName").value;
+
+    if (deckName === "") {
+      document.getElementById("deckName").value = "Untitled";
+      deckName = "Untitled";
+    }
+
+    let currentSavedStacks = [];
+
+    await chrome.storage.sync.get([SAVED_STACKS], (result) => {
+        if (result[SAVED_STACKS]){
+            console.log("currently saved stacks");
+            console.log(result[SAVED_STACKS]);
+            currentSavedStacks = result[SAVED_STACKS];
+            for( let s1 in result[SAVED_STACKS]){
+                if ( s1 === deckName ){
+                    throw "Duplicate Study Deck Name";
+                }
+            }
+        }
+    });
+
+    currentSavedStacks.push(deckName);
+    console.log(currentSavedStacks);
+
+    let currentDeck = getQuestionsAnswers();
+    await chrome.storage.sync.set({[deckName]: currentDeck}, function () {});
+    await chrome.storage.sync.set({[CURRENT_STACK] : deckName});
+    await chrome.storage.sync.set({[SAVED_STACKS] : currentSavedStacks});
+
+     await chrome.storage.sync.get([SAVED_STACKS], (result) => {
+         console.log(result[SAVED_STACKS]);
+        if (result[SAVED_STACKS]){
+            console.log(result[SAVED_STACKS]);
+        }
+    });
+
+}
+
 let addDropDownItems = () => {
 //<option value = "1">one</option>
 
@@ -283,14 +233,16 @@ let addDropDownItems = () => {
 //   selectElement.appendChild(dummy);
 
   chrome.storage.sync.get([SAVED_STACKS], (result) => {
-    if (result){
-      //console.log(result);
+    if (result[SAVED_STACKS]){
+        console.log("Saved stacks are currently");
+      console.log(result[SAVED_STACKS]);
       result[SAVED_STACKS].forEach((stack) => {
+          console.log(stack);
         let opt = document.createElement("option");
-        opt.value = stack.name;
+        opt.value = stack;
         //console.log("opt.value is " + stack.name);
-        opt.innerHTML = stack.name;
-        opt.label = stack.name;
+        opt.innerHTML = stack;
+        opt.label = stack;
         //console.log(opt);
         selectElement.appendChild(opt);
       });
@@ -347,15 +299,14 @@ let saveOnKeyUpStacks = () => {
 
 window.addEventListener('load', () => {
 
-  // Fills the form with the prior contents
-  console.log(CURRENT_STACK);
 
-  chrome.storage.sync.set({CURRENT_STACK: "testingHere"});
 
-  addFakeStack();
+  //chrome.storage.sync.set({CURRENT_STACK: undefined});
+
+  //addFakeStack();
 
   chrome.storage.sync.get([CURRENT_STACK], (result) => {
-      if (result){
+      if (result[CURRENT_STACK] != undefined ){
         console.log("The current stack exists");
         addPriorContents(result[CURRENT_STACK]);
       } else {
@@ -369,15 +320,24 @@ window.addEventListener('load', () => {
 
   // This services the add input button. Creating key-value pair input
   document.getElementById("AddInput").addEventListener('click', addInputRow);
-  // Should there just be save button
-  document.getElementById("studierDeck").addEventListener('keyup', saveQuestionsOnKeyUp);
-  document.getElementById("deckName").addEventListener('keyup', saveOnDeckNameChange);
+
+    // Should there just be save button
+  //document.getElementById("studierDeck").addEventListener('keyup', saveQuestionsOnKeyUp);
+  //document.getElementById("deckName").addEventListener('keyup', saveOnDeckNameChange);
+
+
   document.getElementById("minInterval").addEventListener('keyup', (press) => {
     chrome.storage.sync.set({MINUTE_INTERVAL: press.target.value});
   });
   document.getElementById("secInterval").addEventListener('keyup', (press) => {
     chrome.storage.sync.set({SECOND_INTERVAL: press.target.value});
   });
-  document.getElementById("start").addEventListener('click', fufillStart);
-  document.getElementById("stop").addEventListener('click', quitOperation);
+
+  document.getElementById("startstop").addEventListener('click', startButtonPress);
+  //document.getElementById("stop").addEventListener('click', quitOperation);
+  chrome.storage.sync.get([QUIZ_STATE], (result) => {
+      setStartButton(result[QUIZ_STATE]);
+    });
+  document.getElementById("save").addEventListener('click', saveDeck);
+
 });
